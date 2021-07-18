@@ -2,7 +2,7 @@ import FoundationToolz
 import Foundation
 import SwiftObserver
 
-struct LSPServiceAPI
+public struct LSPServiceAPI
 {
     struct Languages
     {
@@ -14,9 +14,9 @@ struct LSPServiceAPI
         private static let url = LSPServiceAPI.url + "languages"
     }
     
-    struct ProcessID
+    public struct ProcessID
     {
-        static func get() -> Promise<Result<Int, URL.RequestError>>
+        public static func get() -> Promise<Result<Int, URL.RequestError>>
         {
             Promise { url.get(Int.self, handleResult: $0.fulfill) }
         }
@@ -24,11 +24,11 @@ struct LSPServiceAPI
         private static let url = LSPServiceAPI.url + "processID"
     }
     
-    struct Language
+    public struct Language
     {
-        struct Name
+        public struct Name
         {
-            init(_ languageName: String)
+            public init(_ languageName: String)
             {
                 url = Language.url + languageName
             }

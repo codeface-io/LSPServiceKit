@@ -1,7 +1,7 @@
 import SwiftLSP
 import FoundationToolz
 
-extension LSPServiceAPI.Language.Name
+public extension LSPServiceAPI.Language.Name
 {
     func connectToLSPServer() throws -> LSP.ServerConnection
     {

@@ -2,7 +2,7 @@ import FoundationToolz
 import Foundation
 import SwiftObserver
 
-public struct LSPServiceAPI
+public enum LSPServiceAPI
 {
     struct Languages
     {

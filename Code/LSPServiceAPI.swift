@@ -4,7 +4,7 @@ import SwiftObserver
 
 public enum LSPServiceAPI
 {
-    struct Languages
+    public enum Languages
     {
         static func get() -> Promise<Result<[String], URL.RequestError>>
         {
@@ -14,7 +14,7 @@ public enum LSPServiceAPI
         private static let url = LSPServiceAPI.url + "languages"
     }
     
-    public struct ProcessID
+    public enum ProcessID
     {
         public static func get() -> Promise<Result<Int, URL.RequestError>>
         {
@@ -24,7 +24,7 @@ public enum LSPServiceAPI
         private static let url = LSPServiceAPI.url + "processID"
     }
     
-    public struct Language
+    public enum Language
     {
         public struct Name
         {

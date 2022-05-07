@@ -3,12 +3,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "LSPServiceAPI",
+    name: "LSPServiceKit",
     platforms: [.iOS(.v11), .tvOS(.v11), .macOS(.v10_15)],
     products: [
         .library(
-            name: "LSPServiceAPI",
-            targets: ["LSPServiceAPI"]
+            name: "LSPServiceKit",
+            targets: ["LSPServiceKit"]
         ),
     ],
     dependencies: [
@@ -31,7 +31,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "LSPServiceAPI",
+            name: "LSPServiceKit",
             dependencies: ["SwiftLSP", "FoundationToolz", "SwiftObserver", "SwiftyToolz"],
             path: "Code"
         ),

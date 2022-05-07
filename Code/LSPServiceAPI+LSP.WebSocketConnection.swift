@@ -1,6 +1,6 @@
 import SwiftLSP
 
-extension LSPServiceAPI.Language.Name
+extension LSPService.API.Language
 {
     func connectToLSPWebSocket() throws -> LSP.WebSocketConnection
     {

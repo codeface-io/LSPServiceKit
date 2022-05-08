@@ -2,7 +2,6 @@ import FoundationToolz
 import Foundation
 import SwiftObserver
 
-@available(macOS 12.0, *)
 public struct LSPService {
     
     public static let api = API()

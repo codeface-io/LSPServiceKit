@@ -2,6 +2,7 @@ import FoundationToolz
 import Foundation
 import SwiftObserver
 
+@available(macOS 12.0, *)
 public struct LSPService {
     
     public static let api = API()
@@ -17,14 +18,15 @@ public struct LSPService {
         
         public let languages: Languages
         
+        
         public struct Languages {
             
             internal init(rootURL: URL) {
                 url = rootURL + "languages"
             }
             
-            public func get() -> Promise<Result<[String], URL.RequestError>> {
-                Promise { url.get([String].self, handleResult: $0.fulfill) }
+            public func get() async throws -> [String] {
+                try await url.get([String].self)
             }
             
             private let url: URL
@@ -38,8 +40,8 @@ public struct LSPService {
                 url = rootURL + "processID"
             }
             
-            public func get() -> Promise<Result<Int, URL.RequestError>> {
-                Promise { url.get(Int.self, handleResult: $0.fulfill) }
+            public func get() async throws -> Int {
+                try await url.get(Int.self)
             }
             
             private let url: URL
@@ -55,12 +57,12 @@ public struct LSPService {
                 self.url = url
             }
             
-            public func get() -> Promise<Result<String, URL.RequestError>> {
-                Promise { url.get(String.self, handleResult: $0.fulfill) }
+            public func get() async throws -> String {
+                try await url.get(String.self)
             }
             
-            public func post(_ value: String) -> Promise<Result<Void, URL.RequestError>> {
-                Promise { url.post(value, handleResult: $0.fulfill) }
+            public func post(_ value: String) async throws {
+                try await url.post(value)
             }
             
             public func connectToWebSocket() throws -> WebSocket {

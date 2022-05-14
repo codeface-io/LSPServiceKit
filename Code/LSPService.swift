@@ -47,13 +47,15 @@ public struct LSPService {
         }
         
         public func language(_ languageName: String) -> Language {
-            Language(url: (url + "language") + languageName)
+            Language(url: (url + "language") + languageName,
+                     language: languageName)
         }
         
         public struct Language {
             
-            internal init(url: URL) {
+            internal init(url: URL, language: String) {
                 self.url = url
+                self.language = language
             }
             
             public func get() async throws -> String {
@@ -69,6 +71,7 @@ public struct LSPService {
             }
             
             private let url: URL
+            internal let language: String
         }
         
         private let url = URL(string: "http://127.0.0.1:8080/lspservice/api")!

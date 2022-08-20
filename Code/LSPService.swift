@@ -3,11 +3,11 @@ import Foundation
 
 public struct LSPService {
     
-    public static let api = API()
+    internal static let api = API()
     
     private init() {}
     
-    public struct API {
+    internal struct API {
         
         internal init() {
             processID = ProcessID(rootURL: url)

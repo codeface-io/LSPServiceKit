@@ -10,7 +10,7 @@ public class LSPServerManager: ObservableObject {
     private init() {}
     
     public func getServer(for project: ProjectLocation,
-                          handleError: @escaping (Error) -> Void) async throws -> LSP.ServerCommunicationHandler {
+                          handleError: @escaping (Error) -> Void = { log($0) }) async throws -> LSP.ServerCommunicationHandler {
         
         if let activeProject = self.project,
            activeProject == project,
@@ -53,8 +53,6 @@ public class LSPServerManager: ObservableObject {
         }
         
         server.connection.didSendError = { [weak self, weak server] error in
-            log(error)
-            
             // TODO: do we (why don't we?) need to nil the server after the websocket sent an error, so that the server gets recreated and the websocket connection reinstated?? do we need to close the websocket connection?? ... maybe the LSPServerConnection protocol needs to expose more functions for handling the connection itself, like func closeConnection() and var connectionDidClose ...
             
             server?.connection.close()
@@ -93,7 +91,7 @@ public class LSPServerManager: ObservableObject {
     @Published public var serverIsWorking = false
 }
 
-extension Task where Success == Void
+public extension Task where Success == Void
 {
     func assumeSuccess() async throws { try await value }
 }

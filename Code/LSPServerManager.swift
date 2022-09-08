@@ -9,7 +9,7 @@ public class LSPServerManager: ObservableObject {
     
     private init() {}
     
-    public func getServer(for project: LSPProjectDescription,
+    public func getServer(for project: ProjectLocation,
                           handleError: @escaping (Error) -> Void) async throws -> LSP.ServerCommunicationHandler {
         
         if let activeProject = self.project,
@@ -73,7 +73,7 @@ public class LSPServerManager: ObservableObject {
     }
     
     private static func initialize(_ server: LSP.ServerCommunicationHandler,
-                                   for project: LSPProjectDescription) -> Task<Void, Error> {
+                                   for project: ProjectLocation) -> Task<Void, Error> {
         Task {
             let processID = try await LSPService.api.processID.get()
             
@@ -86,7 +86,7 @@ public class LSPServerManager: ObservableObject {
         }
     }
     
-    private var project: LSPProjectDescription? = nil
+    private var project: ProjectLocation? = nil
     private var initialization: Task<Void, Error>? = nil
     private var server: LSP.ServerCommunicationHandler? = nil
     

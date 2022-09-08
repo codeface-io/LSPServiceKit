@@ -1,6 +1,6 @@
 import Foundation
 
-public struct LSPProjectDescription: Codable, Equatable
+public struct ProjectLocation: Codable, Equatable
 {
     public init(folder: URL, language: String, codeFileEndings: [String])
     {

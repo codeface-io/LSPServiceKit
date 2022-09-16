@@ -17,7 +17,7 @@ public extension LSP {
             if let activeProject = self.project,
                activeProject == project,
                let server = server,
-               let initialization = initialization {
+               let initialization {
                 // server has been created and initialization started for this project
                 try await initialization.assumeSuccess()
                 return server

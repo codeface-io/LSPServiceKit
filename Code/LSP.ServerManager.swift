@@ -11,27 +11,26 @@ public extension LSP {
         
         private init() {}
         
-        public func getServer(for project: ProjectLocation,
+        public func getServer(for codebase: CodebaseLocation,
                               handleError: @escaping (Error) -> Void = { log($0) }) async throws -> LSP.ServerCommunicationHandler {
             
-            if let activeProject = self.project,
-               activeProject == project,
+            if let activeCodebase = self.codebaseLocation,
+               activeCodebase == codebase,
                let server = server,
                let initialization {
-                // server has been created and initialization started for this project
+                // server has been created and initialization started for this codebase
                 try await initialization.assumeSuccess()
                 return server
             }
             
             // we have to recreate and initialize the server
-            self.project = project
+            self.codebaseLocation = codebase
             
-            let createdServer = try createServer(language: project.language,
+            let createdServer = try createServer(language: codebase.language,
                                                  handleError: handleError)
             server = createdServer
             
-            let createdInitialization = Self.initialize(createdServer,
-                                                        for: project)
+            let createdInitialization = Self.initialize(createdServer, for: codebase)
             initialization = createdInitialization
             
             serverIsWorking = true
@@ -73,11 +72,11 @@ public extension LSP {
         }
         
         private static func initialize(_ server: LSP.ServerCommunicationHandler,
-                                       for project: ProjectLocation) -> Task<Void, Error> {
+                                       for codebase: CodebaseLocation) -> Task<Void, Error> {
             Task {
                 let processID = try await LSPService.api.processID.get()
                 
-                let _ = try await server.request(.initialize(folder: project.folder,
+                let _ = try await server.request(.initialize(folder: codebase.folder,
                                                              clientProcessID: processID))
                 
                 //            try log(initializeResult: initializeResult)
@@ -86,7 +85,7 @@ public extension LSP {
             }
         }
         
-        private var project: ProjectLocation? = nil
+        private var codebaseLocation: CodebaseLocation? = nil
         private var initialization: Task<Void, Error>? = nil
         private var server: LSP.ServerCommunicationHandler? = nil
         

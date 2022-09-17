@@ -3,7 +3,7 @@ import SwiftLSP
 
 public extension LSP {
     
-    struct ProjectLocation: Codable, Equatable {
+    struct CodebaseLocation: Codable, Equatable {
         
         public init(folder: URL,
                     language: String,

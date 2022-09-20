@@ -12,7 +12,7 @@ public extension LSP {
         private init() {}
         
         public func getServer(for codebase: CodebaseLocation,
-                              handleError: @escaping (Error) -> Void = { log($0) }) async throws -> LSP.ServerCommunicationHandler {
+                              handleConnectionError: @escaping (Error) -> Void = { log($0) }) async throws -> LSP.ServerCommunicationHandler {
             
             if let activeCodebase = self.codebaseLocation,
                activeCodebase == codebase,
@@ -26,8 +26,8 @@ public extension LSP {
             // we have to recreate and initialize the server
             self.codebaseLocation = codebase
             
-            let createdServer = try createServer(language: codebase.language,
-                                                 handleError: handleError)
+            let createdServer = try await createServer(language: codebase.language,
+                                                       handleConnectionError: handleConnectionError)
             server = createdServer
             
             let createdInitialization = Self.initialize(createdServer, for: codebase)
@@ -41,28 +41,29 @@ public extension LSP {
         }
         
         private func createServer(language: String,
-                                  handleError: @escaping (Error) -> Void) throws -> LSP.ServerCommunicationHandler {
+                                  handleConnectionError: @escaping (Error) -> Void) async throws -> LSP.ServerCommunicationHandler {
             
             let server = try LSPService.api.language(language.lowercased()).connectToLSPServer()
             
-            server.serverDidSendNotification = { notification in
+            await server.setNotificationHandler { notification in
                 //            log("Server sent notification:\n\(notification.method)\n\(notification.params?.description ?? "nil params")")
             }
             
-            server.serverDidSendErrorOutput = { _ in
+            await server.setErrorOutputHandler { _ in
                 //            log("\(language.capitalized) language server sent message via stdErr:\n\($0)")
             }
             
-            server.connection.didSendError = { [weak self, weak server] error in
+            await server.connection.didSendError = { error in
                 // TODO: do we (why don't we?) need to nil the server after the websocket sent an error, so that the server gets recreated and the websocket connection reinstated?? do we need to close the websocket connection?? ... maybe the LSPServerConnection protocol needs to expose more functions for handling the connection itself, like func closeConnection() and var connectionDidClose ...
                 
-                server?.connection.close()
-                self?.serverIsWorking = false
-                
-                handleError(error)
+                Task {
+                    await server.connection.close()
+                    self.serverIsWorking = false
+                    handleConnectionError(error)
+                }
             }
             
-            server.connection.didClose = { [weak self] in
+            await server.connection.didClose = { [weak self] in
                 log(warning: "LSP websocket connection did close")
                 
                 self?.serverIsWorking = false

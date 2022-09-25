@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/flowtoolz/SwiftLSP.git",
+            url: "https://github.com/codeface-io/SwiftLSP.git",
             branch: "master"
         ),
         .package(

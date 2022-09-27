@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "LSPServiceKit",
             targets: ["LSPServiceKit"]
-        ),
+        )
     ],
     dependencies: [
         .package(
@@ -27,7 +27,7 @@ let package = Package(
         .package(
             url: "https://github.com/flowtoolz/SwiftyToolz.git",
             branch: "master"
-        ),
+        )
     ],
     targets: [
         .target(
@@ -35,5 +35,10 @@ let package = Package(
             dependencies: ["SwiftLSP", "FoundationToolz", "SwiftObserver", "SwiftyToolz"],
             path: "Code"
         ),
+        .testTarget(
+            name: "LSPServiceKitTests",
+            dependencies: ["LSPServiceKit"],
+            path: "Tests"
+        )
     ]
 )

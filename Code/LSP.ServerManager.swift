@@ -37,7 +37,7 @@ public extension LSP {
         
         private func createServer(forLanguage language: String) async throws -> LSP.ServerCommunicationHandler {
             
-            let server = try LSPService.api.language(language.lowercased()).connectToLSPServer()
+            let server = try LSPService.api.language(language.lowercased()).websocket.connectToLSPServer()
             
             await server.handleNotificationFromServer { notification in
                 //            log("Server sent notification:\n\(notification.method)\n\(notification.params?.description ?? "nil params")")

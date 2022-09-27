@@ -1,21 +1,19 @@
 import FoundationToolz
 import Foundation
 
-public struct LSPService {
+public enum LSPService {
     
-    internal static let api = API()
+    public static let api = APIComponent()
     
-    private init() {}
-    
-    internal struct API {
+    public struct APIComponent {
         
         internal init() {
-            processID = ProcessID(rootURL: url)
+            processID = ProcessIDComponent(rootURL: url)
         }
         
-        public let processID: ProcessID
+        public let processID: ProcessIDComponent
         
-        public struct ProcessID {
+        public struct ProcessIDComponent {
             
             internal init(rootURL: URL) {
                 url = rootURL + "processID"
@@ -25,29 +23,31 @@ public struct LSPService {
                 try await url.get(Int.self)
             }
             
-            private let url: URL
+            internal let url: URL
         }
         
-        public func language(_ languageName: String) -> Language {
-            Language(url: (url + "language") + languageName,
-                     language: languageName)
+        public func language(_ languageName: String) -> LanguageComponent {
+            LanguageComponent(url: (url + "language") + languageName)
         }
         
-        public struct Language {
+        public struct LanguageComponent {
             
-            internal init(url: URL, language: String) {
-                self.url = url
-                self.language = language
+            internal init(url: URL) {
+                websocket = WebSocketComponent(url: url + "websocket")
             }
             
-            public func connectToWebSocket() throws -> WebSocket {
-                try (url + "websocket").webSocket()
-            }
+            public let websocket: WebSocketComponent
             
-            private let url: URL
-            internal let language: String
+            public struct WebSocketComponent
+            {
+                public func connect() throws -> WebSocket {
+                    try url.webSocket()
+                }
+                
+                let url: URL
+            }
         }
         
-        private let url = URL(string: "http://127.0.0.1:8080/lspservice/api")!
+        internal let url = URL(string: "http://127.0.0.1:8080/lspservice/api")!
     }
 }

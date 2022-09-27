@@ -1,10 +1,10 @@
 import SwiftLSP
 import FoundationToolz
 
-public extension LSPService.API.Language {
+public extension LSPService.APIComponent.LanguageComponent.WebSocketComponent {
     
     func connectToLSPServer() throws -> LSP.ServerCommunicationHandler {
         try LSP.ServerCommunicationHandler(connection: connectToLSPWebSocket(),
-                                           language: language)
+                                           language: url.lastPathComponent)
     }
 }

@@ -11,6 +11,7 @@ public extension LSP {
         
         private init() {}
         
+        // TODO: test this interaction with the server, is this test possible without "dependency injection", i.e. how would we model the interaction logic in order to extract it? return some sort of "workflow" or "interaction" type??
         public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.Server {
             serverIsWorking = false
             let server = try await createServer(forLanguageNamed: codebase.languageName)

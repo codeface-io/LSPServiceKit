@@ -6,15 +6,15 @@ public extension LSP {
     struct CodebaseLocation: Codable, Equatable {
         
         public init(folder: URL,
-                    language: String,
+                    languageName: String,
                     codeFileEndings: [String]) {
             self.folder = folder
-            self.language = language
+            self.languageName = languageName
             self.codeFileEndings = codeFileEndings
         }
         
         public var folder: URL
-        public let language: String
+        public let languageName: String
         public let codeFileEndings: [String]
     }
 }

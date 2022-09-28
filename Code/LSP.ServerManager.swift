@@ -11,9 +11,9 @@ public extension LSP {
         
         private init() {}
         
-        public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.ServerCommunicationHandler {
+        public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.Server {
             serverIsWorking = false
-            let server = try await createServer(forLanguage: codebase.language)
+            let server = try await createServer(forLanguageNamed: codebase.languageName)
             let processID = try await LSPService.api.processID.get()
             _ = try await server.request(.initialize(folder: codebase.folder, clientProcessID: processID))
             try await server.notify(.initialized)
@@ -21,9 +21,9 @@ public extension LSP {
             return server
         }
         
-        private func createServer(forLanguage language: String) async throws -> LSP.ServerCommunicationHandler {
+        private func createServer(forLanguageNamed languageName: String) async throws -> LSP.Server {
             
-            let server = try LSPService.api.language(language.lowercased()).websocket.connectToLSPServer()
+            let server = try LSPService.connectToLSPServer(forLanguageNamed: languageName)
             
             await server.handleNotificationFromServer { notification in
                 //            log("Server sent notification:\n\(notification.method)\n\(notification.params?.description ?? "nil params")")

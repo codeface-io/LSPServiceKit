@@ -11,28 +11,14 @@ public extension LSP {
         
         private init() {}
         
-        public func getServer(for codebase: CodebaseLocation) async throws -> LSP.ServerCommunicationHandler {
-            
-            if let activeCodebase = codebaseLocation, activeCodebase == codebase,
-                let server, serverIsWorking {
-                return server
-            }
-            
-            reset()
-            
-            // create new initialized server
-            let newServer = try await createServer(forLanguage: codebase.language)
+        public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.ServerCommunicationHandler {
+            serverIsWorking = false
+            let server = try await createServer(forLanguage: codebase.language)
             let processID = try await LSPService.api.processID.get()
-            _ = try await newServer.request(.initialize(folder: codebase.folder,
-                                                        clientProcessID: processID))
-            try await newServer.notify(.initialized)
-            
-            // set result
-            codebaseLocation = codebase
-            server = newServer
+            _ = try await server.request(.initialize(folder: codebase.folder, clientProcessID: processID))
+            try await server.notify(.initialized)
             serverIsWorking = true
-            
-            return newServer
+            return server
         }
         
         private func createServer(forLanguage language: String) async throws -> LSP.ServerCommunicationHandler {
@@ -49,21 +35,12 @@ public extension LSP {
             
             await server.handleConnectionShutdown { error in
                 log(error.readable)
-                self.reset()
+                self.serverIsWorking = false
             }
             
             return server
         }
         
-        private func reset()
-        {
-            serverIsWorking = false
-            codebaseLocation = nil
-            server = nil
-        }
-        
         @Published public var serverIsWorking = false
-        private var codebaseLocation: CodebaseLocation? = nil
-        private var server: LSP.ServerCommunicationHandler? = nil
     }
 }

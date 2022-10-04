@@ -1,6 +1,10 @@
 # LSPServiceKit
 
-A package that helps Swift clients use [LSPService](https://github.com/codeface-io/LSPService).
+👩🏻‍🚀 *This project [is still a tad experimental](#development-status). Contributors and pioneers welcome!*
+
+## What?
+
+LSPServiceKit helps Swift clients use [LSPService](https://github.com/codeface-io/LSPService).
 
 ## Context
 
@@ -14,4 +18,10 @@ Here is the internal architecture (composition and essential dependencies) of th
 
 ![](Documentation/architecture.png)
 
-The above image was generated with the [Codeface.io](https://www.codeface.io) app.
+The above image was generated with the [Codeface](https://www.codeface.io) app.
+
+## Development Status
+
+From version/tag 0.1.0 on, LSPServiceKit adheres to [semantic versioning](https://semver.org). So until it has reached 1.0.0, its API may still break frequently, but this will be expressed in version bumps.
+
+LSPServiceKit is already being used in production, but [Codeface](https://codeface.io) is still its primary client. LSPServiceKit will move to version 1.0.0 as soon as its basic practicality and conceptual soundness have been validated by serving multiple real-world clients.

@@ -37,7 +37,7 @@ let package = Package(
         ),
         .testTarget(
             name: "LSPServiceKitTests",
-            dependencies: ["LSPServiceKit"],
+            dependencies: ["LSPServiceKit", "SwiftLSP"],
             path: "Tests"
         )
     ]

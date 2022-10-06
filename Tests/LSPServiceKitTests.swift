@@ -1,4 +1,5 @@
 @testable import LSPServiceKit
+import SwiftLSP
 import XCTest
 
 final class LSPServiceKitTests: XCTestCase {

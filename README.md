@@ -78,7 +78,7 @@ Here is the internal architecture (composition and essential dependencies) of th
 
 ![](Documentation/architecture.png)
 
-The above image was generated with the [Codeface](https://www.codeface.io) app.
+The above image was generated with the [Codeface](https://codeface.io) app.
 
 ## Development Status
 

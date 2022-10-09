@@ -1,6 +1,35 @@
 import FoundationToolz
 import Foundation
 
+/**
+ A namespace that precisely mirrors the LSPService web API
+ 
+ For example, you obtain a websocket connection to a Swift LSP server like this:
+ 
+ ```swift
+ let connection = try LSPService.api.language("Swift").websocket.connectToLSPWebSocket()
+ ```
+ 
+ You would then create an `LSP.ServerCommunicationHandler` (a.k.a. `LSP.Server`) with the connection:
+ 
+ ```swift
+ let server = LSP.Server(connection: connection, languageName: "Swift")
+ ```
+ 
+ An LSP server initialize request requires the client's process ID. Since LSPService is the actual client, you might want to request its processID and use it in the initialization request:
+ 
+ ```swift
+ // Get the process ID of LSPService
+ let processID = try await LSPService.api.processID.get()
+
+ // Initialize server with codebase folder
+ _ = try await server.request(.initialize(folder: codebaseFolderURL,
+                                          clientProcessID: processID))
+
+ // Notify server that we are initialized
+ try await server.notify(.initialized)
+ ```
+ */
 public enum LSPService {
     
     public static let api = APIComponent()

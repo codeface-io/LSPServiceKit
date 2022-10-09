@@ -5,6 +5,9 @@ import SwiftyToolz
 
 public extension LSP {
     
+    /**
+     Creates a fully initialized `LSP.Server` and indicates wheter an active server is working
+     */
     class ServerManager: ObservableObject {
         
         public static let shared = ServerManager()
@@ -12,6 +15,12 @@ public extension LSP {
         private init() {}
         
         // TODO: test this interaction with the server, is this test possible without "dependency injection", i.e. how would we model the interaction logic in order to extract it? return some sort of "workflow" or "interaction" type??
+        
+        // TODO: how do we link to `LSP.CodebaseLocation` in the documentation comments? ``LSP/CodebaseLocation`` does not work, maybe because LSP is defined in a different module ...
+        
+        /**
+         Creates a fully initialized `LSP.Server` for an `LSP.CodebaseLocation`
+         */
         public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.Server {
             serverIsWorking = false
             let server = try await createServer(forLanguageNamed: codebase.languageName)
@@ -42,6 +51,11 @@ public extension LSP {
             return server
         }
         
+        /**
+         Indicates whether a server has been initialized and has not produced any errors yet
+         
+         This can be used to inform the whole application about the current availability of an LSP server. Clients may not just read but also set the property, in particular when a problem has occured.
+         */
         @Published public var serverIsWorking = false
     }
 }

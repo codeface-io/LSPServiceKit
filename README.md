@@ -8,7 +8,8 @@
 
 LSPServiceKit helps Swift apps use [LSPService](https://github.com/codeface-io/LSPService):
 
-![Context](Documentation/Context_Diagram.jpg)
+![Context](Documentation/Context_Diagram_dark.png#gh-dark-mode-only)
+![Context](Documentation/Context_Diagram_light.png#gh-light-mode-only)
 
 ## How?
 

@@ -1,5 +1,6 @@
 import FoundationToolz
 import Foundation
+import SwiftyToolz
 
 /**
  A namespace that precisely mirrors the LSPService web API
@@ -31,6 +32,22 @@ import Foundation
  ```
  */
 public enum LSPService {
+
+    public static func isRunning() async -> Bool {
+        do {
+            let lspServiceProcessID = try await api.processID.get()
+            log("LSPService process ID: " + lspServiceProcessID.description)
+            return true
+        } catch {
+            log("LSPServer is not running (request error: \(error.readable.message)")
+            return false
+        }
+    }
+    
+    // FIXME: why does this not work as opposed to all other requests?! The String is even visible in the browser under 127.0.0.1:8080? make public when it works, possibly use it in isRunning()
+    private static func get() async throws -> String {
+        try await url.get()
+    }
     
     public static let api = APIComponent()
     
@@ -49,7 +66,7 @@ public enum LSPService {
             }
             
             public func get() async throws -> Int {
-                try await url.get(Int.self)
+                try await url.get()
             }
             
             internal let url: URL
@@ -77,6 +94,8 @@ public enum LSPService {
             }
         }
         
-        internal let url = URL(string: "http://127.0.0.1:8080/lspservice/api")!
+        internal let url = LSPService.url + "lspservice/api"
     }
+    
+    internal static let url = URL(string: "http://127.0.0.1:8080")!
 }

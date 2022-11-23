@@ -35,42 +35,27 @@ public enum LSPService {
 
     public static func isRunning() async -> Bool {
         do {
-            let lspServiceProcessID = try await api.processID.get()
-            log("LSPService process ID: " + lspServiceProcessID.description)
+            _ = try await get()
             return true
         } catch {
-            log("LSPServer is not running (request error: \(error.readable.message)")
+            log("LSPServer is not running Request error: \(error.readable.message)")
             return false
         }
     }
     
-    // FIXME: why does this not work as opposed to all other requests?! The String is even visible in the browser under 127.0.0.1:8080? make public when it works, possibly use it in isRunning()
-    private static func get() async throws -> String {
-        try await url.get()
+    public static func get() async throws -> String {
+        let dataResult = try await url.get()
+        
+        guard let stringResult = dataResult.utf8String else {
+            throw "Requested data cannot be interpreted as UTF-8 string."
+        }
+        
+        return stringResult
     }
     
     public static let api = APIComponent()
     
     public struct APIComponent {
-        
-        internal init() {
-            processID = ProcessIDComponent(rootURL: url)
-        }
-        
-        public let processID: ProcessIDComponent
-        
-        public struct ProcessIDComponent {
-            
-            internal init(rootURL: URL) {
-                url = rootURL + "processID"
-            }
-            
-            public func get() async throws -> Int {
-                try await url.get()
-            }
-            
-            internal let url: URL
-        }
         
         public func language(_ languageName: String) -> LanguageComponent {
             LanguageComponent(url: (url + "language") + languageName)

@@ -24,8 +24,7 @@ public extension LSP {
         public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.Server {
             serverIsWorking = false
             let server = try await createServer(forLanguageNamed: codebase.languageName)
-            let processID = try await LSPService.api.processID.get()
-            _ = try await server.request(.initialize(folder: codebase.folder, clientProcessID: processID))
+            _ = try await server.request(.initialize(folder: codebase.folder))
             try await server.notify(.initialized)
             serverIsWorking = true
             return server

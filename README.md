@@ -50,12 +50,8 @@ await server.handleConnectionShutdown { error in
 ### Initialize an LSP Server
 
 ```swift
-// Get the process ID of LSPService
-let processID = try await LSPService.api.processID.get()
-
 // Initialize server with codebase folder
-_ = try await server.request(.initialize(folder: codebaseFolderURL, 
-                                         clientProcessID: processID))
+_ = try await server.request(.initialize(folder: codebaseFolderURL))
 
 // Notify server that we are initialized
 try await server.notify(.initialized)

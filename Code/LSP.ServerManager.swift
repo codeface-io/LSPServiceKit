@@ -23,10 +23,18 @@ public extension LSP {
          */
         public func initializeServer(for codebase: CodebaseLocation) async throws -> LSP.Server {
             serverIsWorking = false
+            
             let server = try await createServer(forLanguageNamed: codebase.languageName)
+            
+            /// we need to wait a little before sending our first request in order to increase the probability that LSPService had a chance to actually configure the websocket. this is because vapor does not allow LSPService to configure the websocket before returning the websocket connection. for all intents and purposes, this is a Vapor bug.
+            try await Task.sleep(nanoseconds: 100_000_000)
+            
             _ = try await server.request(.initialize(folder: codebase.folder))
+            
             try await server.notify(.initialized)
+            
             serverIsWorking = true
+            
             return server
         }
         

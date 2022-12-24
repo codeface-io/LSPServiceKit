@@ -6,7 +6,7 @@ public extension LSP {
     /**
      Demarcates a codebase in the file system: by location, language and source file types
      */
-    struct CodebaseLocation: Codable, Equatable {
+    struct CodebaseLocation: Codable, Equatable, Sendable {
         
         public init(folder: URL,
                     languageName: String,

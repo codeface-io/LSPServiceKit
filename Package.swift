@@ -14,19 +14,19 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/codeface-io/SwiftLSP.git",
-            exact: "0.3.7"
+            exact: "0.3.8"
         ),
         .package(
             url: "https://github.com/flowtoolz/FoundationToolz.git",
-            exact: "0.1.6"
+            exact: "0.1.7"
         ),
         .package(
             url: "https://github.com/codeface-io/SwiftObserver.git",
-            exact: "7.0.5"
+            exact: "7.0.6"
         ),
         .package(
             url: "https://github.com/flowtoolz/SwiftyToolz.git",
-            exact: "0.2.2"
+            exact: "0.3.0"
         )
     ],
     targets: [

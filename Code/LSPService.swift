@@ -38,7 +38,7 @@ public enum LSPService {
             _ = try await get()
             return true
         } catch {
-            log("LSPServer is not running Request error: \(error.readable.message)")
+            log("LSPServer is not running. Request error: \(error.readable.message)")
             return false
         }
     }

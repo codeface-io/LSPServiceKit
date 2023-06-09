@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/codeface-io/SwiftLSP.git",
-            exact: "0.3.12"
+            exact: "0.3.13"
         ),
         .package(
             url: "https://github.com/flowtoolz/FoundationToolz.git",

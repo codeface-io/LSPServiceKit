@@ -43,11 +43,16 @@ public extension LSP {
             let server = try LSPService.connectToLSPServer(forLanguageNamed: languageName)
             
             await server.handleNotificationFromServer { notification in
-                //            log("Server sent notification:\n\(notification.method)\n\(notification.params?.description ?? "nil params")")
+                if let logParams = notification.logMessageParameters {
+                    Log.shared.log(message: logParams.message,
+                                   level: logParams.logLevel)
+                } else {
+                    log("Server sent notification with method \"\(notification.method)\"")
+                }
             }
             
-            await server.handleErrorOutputFromServer { _ in
-                //            log("\(language.capitalized) language server sent message via stdErr:\n\($0)")
+            await server.handleErrorOutputFromServer { errorOutput in
+                log(error: errorOutput)
             }
             
             await server.handleConnectionShutdown { error in
